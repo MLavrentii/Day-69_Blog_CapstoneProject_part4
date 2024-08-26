@@ -45,12 +45,13 @@ def admin_only(f):
         if current_user.id == 1:
             return f(*args, **kwargs)
         return abort(403)
+
     return decorated_function
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    #return db.get_or_404(User, user_id)   If no users in base it will raise 404 eroor!!!! it is why i used it in next
+    # return db.get_or_404(User, user_id)   If no users in base it will raise 404 eroor!!!! it is why i used it in next
     return db.session.query(User).get(user_id)
 
 
@@ -61,8 +62,8 @@ def calculate_time_difference(posted_time):
     # Extract days, hours, and minutes
     days = time_difference.days
 
-     # the divmod divide the time_difference.seconds by 3600 and then save the answer as a tuple, with the whole number and remainder,
-      # as hours and remainder(minutes) respectively. the same as the second tuple, only that the remainder( _ ) which is the seconds is not needed.
+    # the divmod divide the time_difference.seconds by 3600 and then save the answer as a tuple, with the whole number and remainder,
+    # as hours and remainder(minutes) respectively. the same as the second tuple, only that the remainder( _ ) which is the seconds is not needed.
     hours, remainder = divmod(time_difference.seconds, 3600)
     minutes, _ = divmod(remainder, 60)
 
@@ -79,7 +80,9 @@ def calculate_time_difference(posted_time):
 # CREATE DATABASE
 class Base(DeclarativeBase):
     pass
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', 'sqlite:///posts.db')
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
@@ -108,6 +111,7 @@ def only_commenter(function):
         if not current_user.is_authenticated or current_user.id != user.author_id:
             return abort(403)
         return function(*args, **kwargs)
+
     return check
 
 
@@ -142,7 +146,6 @@ class Comment(db.Model):
 
 with app.app_context():
     db.create_all()
-
 
 gravatar = Gravatar(app,
                     size=100,
@@ -183,7 +186,7 @@ def register():
 @app.route('/login', methods=["POST", "GET"])
 def login():
     exist_email = request.args.get("email")
-    #print(exist_email)
+    # print(exist_email)
     if exist_email:
         login_form = LoginForm(email=exist_email)
     else:
@@ -237,9 +240,9 @@ def show_post(post_id):
         )
         db.session.add(new_comment)
         db.session.commit()
-        #comments = requested_post.comments
+        # comments = requested_post.comments
         comment_form.comment.data = ""
-        #return render_template("post.html", post=requested_post, logged_in=current_user, form=comment_form,
+        # return render_template("post.html", post=requested_post, logged_in=current_user, form=comment_form,
         # comments=comments)
 
     # tracing the days, hours and minutes each comment is made
@@ -265,7 +268,7 @@ def show_post(post_id):
 def add_new_post():
     form = CreatePostForm()
     if form.validate_on_submit():
-        #print(current_user.name)
+        # print(current_user.name)
         new_post = BlogPost(
             title=form.title.data,
             subtitle=form.subtitle.data,
