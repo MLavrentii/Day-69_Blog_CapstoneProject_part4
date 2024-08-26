@@ -237,7 +237,7 @@ def show_post(post_id):
         )
         db.session.add(new_comment)
         db.session.commit()
-        comments = requested_post.comments
+        #comments = requested_post.comments
         comment_form.comment.data = ""
         #return render_template("post.html", post=requested_post, logged_in=current_user, form=comment_form,
         # comments=comments)
@@ -335,4 +335,4 @@ def contact():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run(debug=False)
