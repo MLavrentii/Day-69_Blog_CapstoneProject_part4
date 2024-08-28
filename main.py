@@ -121,8 +121,8 @@ class User(db.Model, UserMixin):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String, nullable=False)
-    email: Mapped[str] = mapped_column(String(100), nullable=False, unique=True)
-    password: Mapped[str] = mapped_column(String(100), nullable=False)
+    email: Mapped[str] = mapped_column(String(250), nullable=False, unique=True)
+    password: Mapped[str] = mapped_column(String(250), nullable=False)
 
     # This will act like a List of BlogPost objects attached to each User.
     # The "author" refers to the author property in the BlogPost class.
@@ -133,7 +133,7 @@ class User(db.Model, UserMixin):
 class Comment(db.Model):
     __tablename__ = "comment"
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(100), nullable=False)
+    text = db.Column(db.String(250), nullable=False)
     posted_time = db.Column(db.DateTime, nullable=False)
 
     ##################Child Relationship for User###################
