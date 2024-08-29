@@ -121,7 +121,7 @@ class User(db.Model, UserMixin):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     name: Mapped[str] = mapped_column(String(250), nullable=False)
     email: Mapped[str] = mapped_column(String(250), nullable=False, unique=True)
-    password: Mapped[str] = mapped_column(String(250), nullable=False)
+    password: Mapped[str] = mapped_column(String(500), nullable=False)
 
     # This will act like a List of BlogPost objects attached to each User.
     # The "author" refers to the author property in the BlogPost class.
