@@ -52,7 +52,7 @@ def admin_only(f):
 
 @login_manager.user_loader
 def load_user(user_id):
-    # return db.get_or_404(User, user_id)   If no users in base it will raise 404 eroor!!!! it is why i used it in next
+    # return db.get_or_404(User, user_id)   If no users in base it will raise 404 error!!!! it is why i used it in next
     return db.session.query(User).get(user_id)
 
 
@@ -82,8 +82,8 @@ def calculate_time_difference(posted_time):
 class Base(DeclarativeBase):
     pass
 
-
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', 'postgresql:///posts.db')
+#app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', 'postgresql:///posts.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_URI', 'sqlite:///posts.db')
 db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
